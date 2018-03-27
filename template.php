@@ -1,0 +1,1 @@
+/opt/bitnami/apps/wordpress/htdocs/wp-content/themes/twentyseventeen/template.php
