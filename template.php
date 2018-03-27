@@ -46,11 +46,7 @@ mysqli_close($conn);
 </style>
 <script type="text/javascript"
   src=
-"http://maps.googleapis.com/maps/api/js?key=AIzaSyC_ZbLbXmC6orEtlbUvNQQSFW9gCMNykVQ&sensor=false">
-</script>
-<script type="text/javascript"
-  src=
-"http://maps.googleapis.com/maps/api/js?key=AIzaSyB1tbIAqN0XqcgTR1-          FxYoVTVq6Is6lD98&sensor=false">
+"http://maps.googleapis.com/maps/api/js?key=<?php echo $apikey; ?>&sensor=false">
 </script>
 <script type="text/javascript">
 var infos = [];

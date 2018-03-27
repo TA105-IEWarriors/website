@@ -1,0 +1,7 @@
+<?php
+$servername = "";
+$dbuser = "";
+$dbpass = "";
+$dbname = "";
+$apikey = "";
+?>
