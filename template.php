@@ -213,7 +213,7 @@ echo "<option value='".$row1['SuburbTown']."'>".$row1['SuburbTown']."</option>";
 
 <input type="submit" value="Go">
 </form>
-  <div id="default" style="width:50%; height:50%"></div>
+  <div id="default" style="width:80%; height:80%"></div>
 <br />
 
 <script type="text/javascript" src="https://www.weatherzone.com.au/woys/graphic_current.jsp?postcode=<?php
