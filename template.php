@@ -11,11 +11,23 @@ $conn = mysqli_connect($servername,$dbuser,$dbpass,$dbname);
 if (!$conn) {
     die("Connection faiiled: " . mysqli_connect_error());
 }
-
-if (isset($_POST['sprt'])) {
+/*
+if (isset($_POST['sprt']) && $_POST['sprt'] != 'top') {
  $sql = "SELECT FacilityName, Longitude, Latitude from rec_facilities where SportsPlayed = '".$_POST['sprt']."'";
 } else {
  $sql = "SELECT FacilityName, Longitude, Latitude from rec_facilities";
+}
+
+*/
+
+if (isset($_POST['subrb']) && $_POST['subrb'] != 'stop' && isset($_POST['sprt']) && $_POST['sprt'] != 'top') {
+  $sql = "SELECT FacilityName, Longitude, Latitude from rec_facilities where SuburbTown = '".$_POST['subrb']."' AND SportsPlayed = '".$_POST['sprt']."'";
+} else if (isset($_POST['subrb']) && $_POST['subrb'] != 'stop') {
+  $sql = "SELECT FacilityName, Longitude, Latitude from rec_facilities where SuburbTown = '".$_POST['subrb']."'";
+} else if (isset($_POST['sprt']) && $_POST['sprt'] != 'top') {
+  $sql = "SELECT FacilityName, Longitude, Latitude from rec_facilities where SportsPlayed = '".$_POST['sprt']."'";
+} else {
+  $sql = "SELECT FacilityName, Longitude, Latitude from rec_facilities";
 }
 $result = mysqli_query($conn, $sql);
 if (mysqli_num_rows($result) > 0) {
@@ -25,14 +37,28 @@ if (mysqli_num_rows($result) > 0) {
         $longitudes[] = $row['Longitude'];
         $latitudes[] = $row['Latitude'];
     }
-} else {
-    echo "0 results";
 }
 
 $sql1 = "SELECT SportsPlayed from sports_played";
 $sports = mysqli_query($conn,$sql1);
   
+$sql2 = "SELECT SuburbTown from suburb";
+$suburb = mysqli_query($conn,$sql2);
 
+if (isset($_POST['subrb'])&& $_POST['subrb'] != 'stop'){
+  $sql3 = "SELECT Postcode from suburb where SuburbTown = '".$_POST['subrb']."'";
+  $postcode = mysqli_query($conn,$sql3);
+  if (mysqli_num_rows($postcode) > 0) {
+    while($row4 = mysqli_fetch_assoc($postcode)) {
+        $post = $row4['Postcode'];
+  }
+
+
+// output data of each row
+    }
+
+}else { $post = '3000';
+}
 mysqli_close($conn);
 ?>
 
@@ -155,16 +181,45 @@ function closeInfos(){
       <?php
 if (mysqli_num_rows($sports) > 0) {
  while($row = mysqli_fetch_assoc($sports)) {
-  echo "<option value='".$row['SportsPlayed']."'>".$row['SportsPlayed']."</option>";
-  }  
+if (isset($_POST['sprt']) && $_POST['sprt']==$row['SportsPlayed']){
+  echo "<option value='".$row['SportsPlayed']."' selected>".$row['SportsPlayed']."</option>";
+  }  else {
+echo "<option value='".$row['SportsPlayed']."'>".$row['SportsPlayed']."</option>";
+}
+}
 } else {
   echo "<option value='none'>No Data</option>";
 }
       ?>
 </select>
+
+
+ <select name="subrb">
+    "<option value='stop'>Select a Suburb...</option>
+      <?php
+if (mysqli_num_rows($suburb) > 0) {
+ while($row1 = mysqli_fetch_assoc($suburb)) {
+if (isset($_POST['subrb']) && $_POST['subrb']==$row1['SuburbTown']){
+  echo "<option value='".$row1['SuburbTown']."' selected>".$row1['SuburbTown']."</option>";
+  }  else {
+echo "<option value='".$row1['SuburbTown']."'>".$row1['SuburbTown']."</option>";
+}
+}
+} else {
+  echo "<option value='none'>No Data</option>";
+}
+      ?>
+</select>
+
 <input type="submit" value="Go">
 </form>
-  <div id="default" style="width:50%; height:50%"></div></center>
+  <div id="default" style="width:50%; height:50%"></div>
+<br />
 
+<script type="text/javascript" src="https://www.weatherzone.com.au/woys/graphic_current.jsp?postcode=<?php
+echo $post;
+?>
+"></script> <br />
+</center>
  </body>
   </html>
